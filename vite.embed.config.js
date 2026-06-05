@@ -1,16 +1,19 @@
 import { defineConfig } from "vite";
 import react from '@vitejs/plugin-react';
-import { readFile, readFileSync, write, writeFile, writeFileSync } from 'fs';
+import { existsSync, readFile, readFileSync, write, writeFile, writeFileSync } from 'fs';
 
 export default defineConfig({
     plugins: [
         react(),
         {
-            // After the build, wrap the output in a full HTML document
-            // and write it as a JS module that exports the HTML string.
+            name: 'embed-html-wrapper',
             closeBundle() {
-                const js = readFileSync('dist-embed/assets/index.js', 'utf-8');
-                const css = readFileSync('dist-embed/assets/index.css', 'utf-8');
+                const jsPath = 'dist-embed/assets/index.js';
+                const cssPath = 'dist-embed/assets/index.css';
+
+                const js = readFileSync(jsPath, 'utf-8');
+
+                const css = existsSync(cssPath) ? readFileSync(cssPath) : '';
 
                 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -42,6 +45,7 @@ export default defineConfig({
     ],
     build: {
         outDir: 'dist-embed',
+        cssCodeSplit: false,
         rolldownOptions: {
             input: 'src/main.tsx',
             output: {
