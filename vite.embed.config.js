@@ -7,7 +7,7 @@ export default defineConfig({
         react(),
         {
             name: 'embed-html-wrapper',
-            closeBundle() {
+            writeBundle() {
                 const jsPath = 'dist-embed/assets/index.js';
                 const cssPath = 'dist-embed/assets/index.css';
 
@@ -46,12 +46,14 @@ export default defineConfig({
     build: {
         outDir: 'dist-embed',
         cssCodeSplit: false,
+        minify: 'esbuild',
+        chunkSizeWarningLimit: 1000,
         rolldownOptions: {
             input: 'src/main.tsx',
             output: {
                 format: 'iife',
                 name: 'EmbedApp',
-                codeSplitting: true,
+                codeSplitting: false,
                 entryFileNames: "assets/index.js",
                 assetFileNames: "assets/index.css",
             }

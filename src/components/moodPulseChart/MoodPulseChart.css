@@ -1,0 +1,108 @@
+:root {
+  --color-bg-chart: #13151a;
+  --color-bg-tooltip: #1c1f26;
+  --color-border-tooltip: #2d333f;
+  --color-grid: #20242c;
+  --color-axis-text: #666666;
+  --color-text-main: #dddddd;
+  --color-text-muted: #888888;
+  --color-text-legend: #aaaaaa;
+  --color-accent-gold: #d9a75d;
+  
+  /* Series Colors */
+  --color-trend-orange: #e67e22;
+  --color-deviation-yellow: #f1c40f;
+  --color-task-low: #7a6e2a;
+  --color-task-high: #5a8a3a;
+}
+
+.mood-pulse-container {
+  width: 100%;
+  height: 500px;
+  background-color: var(--color-bg-chart);
+  padding: 24px;
+  border-radius: 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.mood-pulse-charts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.mood-pulse-chart-main {
+  flex: 4;
+  min-height: 0;
+}
+
+.mood-pulse-chart-bars {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Header & Typography */
+.mood-pulse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 20px;
+  font-family: sans-serif;
+}
+
+.mood-pulse-title-group .chart-label {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mood-pulse-title-group h2 {
+  color: var(--color-accent-gold);
+  margin: 4px 0 0 0;
+  font-size: 28px;
+  font-weight: normal;
+}
+
+.mood-pulse-title-group h2 span {
+  font-weight: bold;
+}
+
+/* Custom Legend */
+.mood-pulse-legend {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  color: var(--color-text-legend);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-indicator {
+  display: inline-block;
+}
+
+.legend-indicator.trend {
+  width: 12px;
+  height: 2px;
+  background-color: var(--color-trend-orange);
+}
+
+.legend-indicator.deviation {
+  width: 2px;
+  height: 10px;
+  background-color: var(--color-deviation-yellow);
+}
+
+.legend-indicator.task {
+  width: 8px;
+  height: 10px;
+  background-color: var(--color-task-green);
+}
