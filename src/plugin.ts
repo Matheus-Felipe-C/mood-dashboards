@@ -5,6 +5,8 @@ const plugin = {
         'Counter': {
             async run (app: any) {
                 await app.openEmbed();
+
+                await app.navigate("https://www.amplenote.com/notes/plugins/" + app.context.pluginUUID);
             }
         },
         'getMood': async function (app: any) {
