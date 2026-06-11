@@ -4,7 +4,7 @@ const plugin = {
     appOption: {
         'Counter': {
             async run (app: any) {
-                await app.openSidebarEmbed(1);
+                await app.openEmbed();
             }
         },
         'getMood': async function (app: any) {
