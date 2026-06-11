@@ -27,6 +27,21 @@
   flex-direction: column;
 }
 
+.mood-pulse-container button {
+  background: none;
+  border: 1px solid var(--color-border-tooltip);
+  color: var(--color-text-muted);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.mood-pulse-container button:hover {
+  color: var(--color-text-main);
+  border-color: var(--color-text-muted);
+}
+
 .mood-pulse-charts {
   flex: 1;
   display: flex;

@@ -24,9 +24,18 @@ interface MoodDataPoint {
 
 interface ChartProps {
     data: MoodDataPoint[];
+    onRegenerate: () => void;
 }
 
-export const MoodPulseChart: React.FC<ChartProps> = ({ data }) => {
+export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => {
+
+    const averageMood = useMemo(() => {
+        if (data.length === 0) return 0;
+
+        const sum = data.reduce((acc, point) => acc + point.rating, 0);
+
+        return (sum / data.length).toFixed(2);
+    }, [data]);
 
     const processedData = useMemo(() => {
         return data.map((item, index, arr) => {
@@ -74,9 +83,10 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data }) => {
                 <div className="mood-pulse-title-group">
                     <span className="chart-label">Mood Pulse</span>
                     <h2>
-                        Avg <span>+1.04</span>
+                        Avg <span>{Number(averageMood) >= 0 ? `+${averageMood}`: averageMood}</span>
                     </h2>
                 </div>
+                <button onClick={onRegenerate}>Regenerate</button>
 
                 {/* Custom Legend Layout */}
                 <div className="mood-pulse-legend">
@@ -113,6 +123,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data }) => {
                                 tickLine={false}
                                 tick={{ fill: 'var(--color-axis-text)', fontSize: 11 }}
                                 interval={0}
+                                orientation='top'
                             />
 
                             <YAxis
