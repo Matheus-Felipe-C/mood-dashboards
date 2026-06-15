@@ -2,7 +2,7 @@ import getHTML from './mood-embed';
 
 const plugin = {
     appOption: {
-        'Counter': {
+        'Mood as Heartbeat': {
             async run (app: any) {
                 await app.openEmbed();
 
