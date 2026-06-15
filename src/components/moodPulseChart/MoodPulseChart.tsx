@@ -105,7 +105,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
             {/* Chart Canvas Area */}
             <div className="mood-pulse-charts">
                 <div className="mood-pulse-chart-main">
-                    <ResponsiveContainer width="100%" height="75%">
+                    <ResponsiveContainer width="100%" height="75%" debounce={50}>
                         <ComposedChart data={processedData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorMood" x1="0" y1="0" x2="0" y2="1">
@@ -193,7 +193,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
                 </div>
 
                 <div className="mood-pulse-chart-bars">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" debounce={50}>
                         <BarChart data={processedData} margin={{ top: 4, right: 10, left: -20, bottom: 0 }}>
                             <XAxis dataKey="dateStr" hide />
                             <YAxis domain={[0, maxTaskValue]} />

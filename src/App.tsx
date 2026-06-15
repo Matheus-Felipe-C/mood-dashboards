@@ -1,11 +1,36 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { MoodPulseChart } from './components/moodPulseChart/MoodPulseChart'
 import { generateMockMoods } from './utils/mockData'
 
+declare global {
+  interface Window {
+    callAmplenoteFunction: (functionName: string, ...args: any[]) => Promise<any>;
+  }
+}
+
 function App() {
 
   const [moodData, setMoodData] = useState(() => generateMockMoods(60, 30));
+
+  async function fetchMoods(days: number) {
+    if (typeof window.callAmplenoteFunction !== 'function') {
+      console.log('Could not get mood from the plugin API, falling back to mocked data...');
+      setMoodData(generateMockMoods(60, days));
+      return;
+    }
+
+    try {
+      const result = await window.callAmplenoteFunction("getMoods", days);
+      setMoodData(result);
+    } catch (err) {
+      console.error("failed to fetch mood data:", err);
+    }
+  }
+
+  useEffect(() => {
+    fetchMoods(30);
+  }, []);
 
   function regenerate() {
     setMoodData(generateMockMoods(60, 30));

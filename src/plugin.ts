@@ -18,6 +18,19 @@ const plugin = {
 
     renderEmbed(app: any, ...args: any) {
         return getHTML();
+    },
+
+    async onEmbedCall(app: any, action: any, ...args: any) {
+        switch (action) {
+            // Gets the mood from days sent in the embed call
+            case "getMoods": {
+                const [days] = args;
+                const fromDate = Math.floor(Date.now() / 1000) - (days * 24 * 60 * 60);
+                const moodRatings = await app.getMoodRatings(fromDate);
+
+                return moodRatings;
+            }
+        }
     }
 }
 
