@@ -5,7 +5,7 @@ import { generateMockMoods } from './utils/mockData'
 
 declare global {
   interface Window {
-    callAmplenoteFunction: (functionName: string, ...args: any[]) => Promise<any>;
+    callAmplenotePlugin: (functionName: string, ...args: any[]) => Promise<any>;
   }
 }
 
@@ -14,14 +14,14 @@ function App() {
   const [moodData, setMoodData] = useState(() => generateMockMoods(60, 30));
 
   async function fetchMoods(days: number) {
-    if (typeof window.callAmplenoteFunction !== 'function') {
+    if (typeof window.callAmplenotePlugin !== 'function') {
       console.log('Could not get mood from the plugin API, falling back to mocked data...');
       setMoodData(generateMockMoods(60, days));
       return;
     }
 
     try {
-      const result = await window.callAmplenoteFunction("getMoods", days);
+      const result = await window.callAmplenotePlugin("getMoods", days);
       setMoodData(result);
     } catch (err) {
       console.error("failed to fetch mood data:", err);

@@ -27,18 +27,90 @@ interface ChartProps {
     onRegenerate: () => void;
 }
 
+function groupByDay(data: MoodDataPoint[]) {
+    const groups = new Map<String, MoodDataPoint[]>();
+
+    data.forEach((point) => {
+        const dayKey = new Date(point.timestamp * 1000).toDateString();
+
+        if (!groups.has(dayKey)) groups.set(dayKey, []);
+
+        groups.get(dayKey)!.push(point);
+    });
+
+    return Array.from(groups.values()).map((entries) => {
+        const avgRating = entries.reduce((sum, p) => sum + p.rating, 0) / entries.length;
+
+        return {
+            rating: avgRating,
+            entries,
+            note: entries.map(e => e.note).join(' '),
+            timestamp: entries[entries.length - 1].timestamp,
+        };
+    }).sort((a, b) => a.timestamp - b.timestamp);
+}
+
+function formatXAxis(tickItem: string, index: number, processedData: any[]) {
+    if (index === 0) return processedData[0]?.monthStr || '';
+
+    const prev = processedData[index - 1];
+
+    if (prev && prev.monthStr !== processedData[index]?.monthStr) {
+        return processedData[index].monthStr;
+    }
+
+    return '';
+}
+
+const CustomToolTip = ({ active, payload }: any) => {
+    if (!active || !payload || payload.length === 0) return null;
+
+    const data = payload[0]?.payload;
+    const deviation = data.rating - data.smoothedMood;
+
+    return (
+        <div style={{
+            backgroundColor: 'var(--color-bg-tooltip)',
+            border: '1px solid var(--color-border-tooltip)',
+            borderRadius: '6px',
+            padding: '8px 12px',
+            fontSize: '12px',
+        }}>
+            <div style={{ color: 'var(--color-text-legend)', fontWeight: 'bold', marginBottom: 4 }}>
+                {data.dateStr}
+            </div>
+            <div style={{ color: 'var(--color-text-muted)' }}>
+                Mood: <span style={{ color: 'var(--color-trend-orange)'}}>{data.rating >= 0 ? `+${data.rating.toFixed(2)}` : data.rating.toFixed(2)}</span>
+            </div>
+            <div style={{ color: 'var(--color-text-muted)' }}>
+                Deviation: <span style={{ color: 'var(--color-deviation-yellow)'}}>{deviation >= 0 ? `+${deviation.toFixed(2)}` : deviation.toFixed(2)}</span>
+            </div>
+            <div style={{ color: 'var(--color-text-muted)' }}>
+                Tasks: <span style={{ color: 'var(--color-task-high)'}}>{data.taskValue}</span>
+            </div>
+            {data.entries.length > 1 && (
+                <div style={{ color: 'var(--color-text-muted)', fontSize: 11, marginTop: 4 }}>
+                    {data.entries.length} ratings logged ({data.entries.map((e: any) => e.rating).join(', ')})
+                </div>
+            )}
+        </div>
+    )
+}
+
 export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => {
 
+    const groupedData = useMemo(() => groupByDay(data), [data]);
+
     const averageMood = useMemo(() => {
-        if (data.length === 0) return 0;
+        if (groupedData.length === 0) return 0;
 
-        const sum = data.reduce((acc, point) => acc + point.rating, 0);
+        const sum = groupedData.reduce((acc, point) => acc + point.rating, 0);
 
-        return (sum / data.length).toFixed(2);
-    }, [data]);
+        return (sum / groupedData.length).toFixed(2);
+    }, [groupedData]);
 
     const processedData = useMemo(() => {
-        return data.map((item, index, arr) => {
+        return groupedData.map((item, index, arr) => {
             const start = Math.max(0, index - 3);
             const end = Math.min(arr.length, index + 4);
             const subset = arr.slice(start, end);
@@ -59,21 +131,12 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
                 taskValue: taskValue
             };
         });
-    }, [data]);
+    }, [groupedData]);
 
     const maxTaskValue = useMemo(
         () => Math.max(...processedData.map(d => d.taskValue)),
         [processedData]
     );
-
-    const formatXAxis = (tickItem: string, index: number) => {
-        if (index === 0) return processedData[index]?.monthStr || '';
-        const prev = processedData[index - 1];
-        if (prev && prev.monthStr !== processedData[index].monthStr) {
-            return processedData[index].monthStr;
-        }
-        return '';
-    };
 
     return (
         <div className="mood-pulse-container">
@@ -83,7 +146,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
                 <div className="mood-pulse-title-group">
                     <span className="chart-label">Mood Pulse</span>
                     <h2>
-                        Avg <span>{Number(averageMood) >= 0 ? `+${averageMood}`: averageMood}</span>
+                        Avg <span>{Number(averageMood) >= 0 ? `+${averageMood}` : averageMood}</span>
                     </h2>
                 </div>
                 <button onClick={onRegenerate}>Regenerate</button>
@@ -118,7 +181,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
 
                             <XAxis
                                 dataKey="dateStr"
-                                tickFormatter={formatXAxis}
+                                tickFormatter={(tick, index) => formatXAxis(tick, index, processedData)}
                                 axisLine={false}
                                 tickLine={false}
                                 tick={{ fill: 'var(--color-axis-text)', fontSize: 11 }}
@@ -136,30 +199,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
                                 tick={{ fill: 'var(--color-axis-text)', fontSize: 12 }}
                             />
 
-                            <Tooltip
-                                contentStyle={{
-                                    backgroundColor: 'var(--color-bg-tooltip)',
-                                    borderColor: 'var(--color-border-tooltip)',
-                                    borderRadius: '6px'
-                                }}
-                                itemStyle={{ color: 'var(--color-text-main)' }}
-                                labelStyle={{ color: 'var(--color-text-muted)', fontWeight: 'bold' }}
-                                formatter={(value: any, name: any, props: any) => {
-                                    const nameStr = String(name);
-
-                                    // Safely extract the raw value as a string/number if it exists
-                                    const displayValue = Array.isArray(value) ? value.join(' - ') : (value ?? '');
-
-                                    if (nameStr === "Smoothed Trend") {
-                                        return [displayValue, "Mood Trend"];
-                                    }
-                                    if (nameStr === "Task Value") {
-                                        return [props.payload?.note ? "Logged" : "None", "Activity"];
-                                    }
-
-                                    return [displayValue, nameStr];
-                                }}
-                            />
+                            <Tooltip content={<CustomToolTip />}/>
 
                             <Area
                                 yAxisId="mood"
@@ -202,6 +242,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
                                 fill="var(--color-task-green)"
                                 maxBarSize={3}
                                 isAnimationActive={false}
+
                                 shape={(props) => {
                                     const { x, y, width, height, value } = props;
                                     const fill = (value as number) / maxTaskValue > 0.6
