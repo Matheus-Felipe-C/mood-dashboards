@@ -239,6 +239,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, onRegen
                         <BarChart data={processedData} margin={{ top: 4, right: 10, left: -20, bottom: 0 }}>
                             <XAxis dataKey="dateStr" hide />
                             <YAxis domain={[0, maxTaskValue]} />
+                            <Tooltip content={<CustomToolTip/>} cursor={false} />
                             <Bar
                                 dataKey="taskValue"
                                 fill="var(--color-task-green)"
