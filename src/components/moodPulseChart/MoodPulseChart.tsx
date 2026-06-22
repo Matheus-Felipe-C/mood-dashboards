@@ -83,7 +83,7 @@ const CustomToolTip = ({ active, payload }: any) => {
                 {data.dateStr}
             </div>
             <div style={{ color: 'var(--color-text-muted)' }}>
-                Mood: <span style={{ color: 'var(--color-trend-orange)'}}>{data.rating >= 0 ? `+${data.rating.toFixed(2)}` : data.rating.toFixed(2)}</span>
+                Mood: <span style={{ color: 'var(--color-trend-orange)'}}>{data.smoothedMood >= 0 ? `+${data.smoothedMood}` : data.smoothedMood}</span>
             </div>
             <div style={{ color: 'var(--color-text-muted)' }}>
                 Deviation: <span style={{ color: 'var(--color-deviation-yellow)'}}>{deviation >= 0 ? `+${deviation.toFixed(2)}` : deviation.toFixed(2)}</span>
@@ -195,7 +195,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, onRegen
                                 yAxisId="mood"
                                 domain={[-2.2, 2.2]}
                                 ticks={[-2, -1, 0, 1, 2]}
-                                tickFormatter={(v) => (v >= 0 ? `+${v}` : v)}
+                                tickFormatter={(v) => (v > 0 ? `+${v}` : v)}
                                 axisLine={false}
                                 tickLine={false}
                                 tick={{ fill: 'var(--color-axis-text)', fontSize: 12 }}
