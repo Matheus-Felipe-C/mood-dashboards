@@ -24,10 +24,11 @@ interface MoodDataPoint {
 
 interface ChartProps {
     data: MoodDataPoint[];
+    taskCounts: Map<string, number>;
     onRegenerate: () => void;
 }
 
-function groupByDay(data: MoodDataPoint[]) {
+function groupByDay(data: MoodDataPoint[], taskCounts: Map<string, number>) {
     const groups = new Map<String, MoodDataPoint[]>();
 
     data.forEach((point) => {
@@ -40,11 +41,13 @@ function groupByDay(data: MoodDataPoint[]) {
 
     return Array.from(groups.values()).map((entries) => {
         const avgRating = entries.reduce((sum, p) => sum + p.rating, 0) / entries.length;
+        const dayKey = new Date(entries[0].timestamp * 1000).toDateString();
 
         return {
             rating: avgRating,
             entries,
             note: entries.map(e => e.note).join(' '),
+            taskCount: taskCounts.get(dayKey) ?? 0,
             timestamp: entries[entries.length - 1].timestamp,
         };
     }).sort((a, b) => a.timestamp - b.timestamp);
@@ -97,9 +100,9 @@ const CustomToolTip = ({ active, payload }: any) => {
     )
 }
 
-export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => {
+export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, onRegenerate }) => {
 
-    const groupedData = useMemo(() => groupByDay(data), [data]);
+    const groupedData = useMemo(() => groupByDay(data, taskCounts), [data, taskCounts]);
 
     const averageMood = useMemo(() => {
         if (groupedData.length === 0) return 0;
@@ -119,8 +122,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, onRegenerate }) => 
             const deviation = item.rating - smoothedMood;
             const errorData = deviation >= 0 ? [0, deviation] : [Math.abs(deviation), 0];
 
-            // Using length of note as a proxy metric for task values
-            const taskValue = item.note ? Math.min(100, item.note.length * 2 + Math.floor(Math.random() * 20)) : 10;
+            const taskValue = item.taskCount;
 
             return {
                 ...item,

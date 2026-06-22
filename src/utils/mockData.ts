@@ -13,23 +13,27 @@ export function generateMockMoods(count: number = 10, daysBack: number = 7) {
     ];
 
     const nowInSeconds = Math.floor(Date.now() / 1000);
-    const secondsinDay = 86400;
-    const mockRatings = [];
 
-    // Picks a random rating from the moodsPool and adds it throughout the days
-    for (let i = 0; i < count; i++) {
+    return Array.from({ length: daysBack }, (_, i) => {
         const randomTemplate = moodsPool[Math.floor(Math.random() * moodsPool.length)];
-
-        const randomTimeOffset = Math.floor(Math.random() * daysBack * secondsinDay);
-        const timestamp = nowInSeconds - randomTimeOffset;
-
-        mockRatings.push({
+        const timestamp = nowInSeconds - i * 86400; // one entry per day, sequential
+        return {
             uuid: crypto.randomUUID(),
             rating: randomTemplate.rating,
             note: randomTemplate.note,
-            timestamp: timestamp
-        });
+            timestamp,
+        };
+    }).sort((a, b) => a.timestamp - b.timestamp);
+}
+
+export function generateMockTaskCounts(days: number): Map<string, number> {
+    const counts = new Map<string, number>();
+    const now = Math.floor(Date.now() / 1000);
+
+    for (let i = days - 1; i >= 0; i--) {
+        const date = new Date((now - i * 86400) * 1000).toDateString(); 
+        counts.set(date, Math.floor(Math.random() * 40 + 5));
     }
 
-    return mockRatings.sort((a, b) => a.timestamp - b.timestamp);
+    return counts;
 }

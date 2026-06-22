@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { MoodPulseChart } from './components/moodPulseChart/MoodPulseChart'
-import { generateMockMoods } from './utils/mockData'
+import { generateMockMoods, generateMockTaskCounts } from './utils/mockData'
 
 declare global {
   interface Window {
@@ -12,6 +12,7 @@ declare global {
 function App() {
 
   const [moodData, setMoodData] = useState(() => generateMockMoods(60, 30));
+  const [taskCounts, setTaskCounts] = useState(() => generateMockTaskCounts(30));
 
   async function fetchMoods(days: number) {
     if (typeof window.callAmplenotePlugin !== 'function') {
@@ -34,6 +35,7 @@ function App() {
 
   function regenerate() {
     setMoodData(generateMockMoods(60, 30));
+    setTaskCounts(generateMockTaskCounts(30));
   }
 
   return (
@@ -45,7 +47,7 @@ function App() {
       </header>
 
       <main>
-        <MoodPulseChart data={moodData} onRegenerate={regenerate} />
+        <MoodPulseChart data={moodData} taskCounts={taskCounts} onRegenerate={regenerate} />
       </main>
     </div>
   )
