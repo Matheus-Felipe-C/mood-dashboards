@@ -25,7 +25,8 @@ interface MoodDataPoint {
 interface ChartProps {
     data: MoodDataPoint[];
     taskCounts: Map<string, number>;
-    onRegenerate: () => void;
+    selectedRange: number;
+    onLoadRange: (days: number) => void;
 }
 
 function groupByDay(data: MoodDataPoint[], taskCounts: Map<string, number>) {
@@ -100,7 +101,7 @@ const CustomToolTip = ({ active, payload }: any) => {
     )
 }
 
-export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, onRegenerate }) => {
+export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, selectedRange, onLoadRange }) => {
 
     const groupedData = useMemo(() => groupByDay(data, taskCounts), [data, taskCounts]);
 
@@ -140,6 +141,13 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, onRegen
         [processedData]
     );
 
+    const ranges = [
+        { label: '7d', days: 7 },
+        { label: '30d', days: 30 },
+        { label: '90d', days: 90 },
+        { label: '1y', days: 365 },
+    ];
+
     return (
         <div className="mood-pulse-container">
 
@@ -151,7 +159,21 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, onRegen
                         Avg <span>{Number(averageMood) >= 0 ? `+${averageMood}` : averageMood}</span>
                     </h2>
                 </div>
-                <button onClick={onRegenerate}>Regenerate</button>
+                <div className='range-buttons'>
+                    {ranges.map((range) => (
+                        <button
+                            key={range.days}
+                            className={
+                                selectedRange === range.days
+                                    ? 'active'
+                                    : ''
+                            }
+                            onClick={() => onLoadRange(range.days)}
+                        >
+                            {range.label}
+                        </button>
+                    ))}
+                </div>
 
                 {/* Custom Legend Layout */}
                 <div className="mood-pulse-legend">

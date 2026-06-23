@@ -12,13 +12,18 @@ declare global {
 
 function App() {
 
+  const [selectedRange, setSelectedRange] = useState(30);
   const [moodData, setMoodData] = useState(() => generateMockMoods(60, 30));
   const [taskCounts, setTaskCounts] = useState(() => generateMockTaskCounts(30));
 
-  async function fetchMoods(days: number) {
+  async function loadData(days: number) {
+    setSelectedRange(days);
+
     if (typeof window.callAmplenotePlugin !== 'function') {
       console.log('Could not get mood from the plugin API, falling back to mocked data...');
       setMoodData(generateMockMoods(60, days));
+      setTaskCounts(generateMockTaskCounts(days));
+
       return;
     }
 
@@ -33,13 +38,8 @@ function App() {
   }
 
   useEffect(() => {
-    fetchMoods(30);
+    loadData(30);
   }, []);
-
-  function regenerate() {
-    setMoodData(generateMockMoods(60, 30));
-    setTaskCounts(generateMockTaskCounts(30));
-  }
 
   return (
     <div className="app-container" style={{ padding: '20px', backgroundColor: '#0b0c10'}}> 
@@ -50,7 +50,7 @@ function App() {
       </header>
 
       <main>
-        <MoodPulseChart data={moodData} taskCounts={taskCounts} onRegenerate={regenerate} />
+        <MoodPulseChart data={moodData} taskCounts={taskCounts} selectedRange={selectedRange} onLoadRange={loadData} />
       </main>
     </div>
   )

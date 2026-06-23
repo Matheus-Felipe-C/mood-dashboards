@@ -75,6 +75,12 @@
   letter-spacing: 1px;
 }
 
+.range-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
 .mood-pulse-title-group h2 {
   color: var(--color-accent-gold);
   margin: 4px 0 0 0;
