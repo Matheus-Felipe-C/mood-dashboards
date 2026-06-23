@@ -29,6 +29,15 @@ const plugin = {
                 const moodRatings = await app.getMoodRatings(fromDate);
 
                 return moodRatings;
+            };
+            // Gets the completed tasks from today up to the day argument
+            case "getCompletedTasks": {
+                const [days] = args;
+                const fromDate = Math.floor(Date.now() / 1000) - (days * 24 * 60 * 60);
+                const toDate = Math.floor(Date.now() / 1000);
+                const completedTasks = await app.getCompletedTasks(fromDate, toDate);
+
+                return completedTasks;
             }
         }
     }

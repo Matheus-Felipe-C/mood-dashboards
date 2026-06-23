@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import { MoodPulseChart } from './components/moodPulseChart/MoodPulseChart'
 import { generateMockMoods, generateMockTaskCounts } from './utils/mockData'
+import { convertTasksToMap } from './utils/conversions';
 
 declare global {
   interface Window {
@@ -22,8 +23,10 @@ function App() {
     }
 
     try {
-      const result = await window.callAmplenotePlugin("getMoods", days);
-      setMoodData(result);
+      const moods = await window.callAmplenotePlugin("getMoods", days);
+      const completedTasks = await window.callAmplenotePlugin("getCompletedTasks", days);
+      setMoodData(moods);
+      setTaskCounts(convertTasksToMap(completedTasks));
     } catch (err) {
       console.error("failed to fetch mood data:", err);
     }
