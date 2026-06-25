@@ -4,15 +4,21 @@ const plugin = {
     appOption: {
         'Mood as Heartbeat': {
             async run (app: any) {
-                await app.openEmbed();
-
+                await app.openEmbed('mood');
                 await app.navigate("https://www.amplenote.com/notes/plugins/" + app.context.pluginUUID);
             }
         },
-        'getMood': async function (app: any) {
-                const from = Math.floor(Date.now() / 1000) - (60 * 60 * 24); // 1 day ago
-                const moodRatings = await app.getMoodRatings(from);
-                await app.alert("Mood ratings: " + JSON.stringify(moodRatings));
+        'Read your Days Back': {
+            async run (app: any) {
+                await app.openEmbed('readback');
+                await app.navigate("https://www.amplenote.com/notes/plugins/" + app.context.pluginUUID);
+            }
+        },
+        'Spiral Mood': {
+            async run (app: any) {
+                await app.openEmbed('spiral');
+                await app.navigate("https://www.amplenote.com/notes/plugins/" + app.context.pluginUUID);
+            }
         }
     },
 
@@ -22,6 +28,11 @@ const plugin = {
 
     async onEmbedCall(app: any, action: any, ...args: any) {
         switch (action) {
+            // Selects which dashboard will be opened
+            case 'getDashboard' : {
+                return app.context.embedArgs?.[0] ?? 'mood';
+            }
+
             // Gets the mood from days sent in the embed call
             case "getMoods": {
                 const [days] = args;
