@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     async function init() {
       if (typeof window.callAmplenotePlugin !== 'function') {
-        setDashboard('mood');
+        setDashboard('readback');
         return;
       }
 
