@@ -73,27 +73,21 @@ const CustomToolTip = ({ active, payload }: any) => {
     const deviation = data.rating - data.smoothedMood;
 
     return (
-        <div style={{
-            backgroundColor: 'var(--color-bg-tooltip)',
-            border: '1px solid var(--color-border-tooltip)',
-            borderRadius: '6px',
-            padding: '8px 12px',
-            fontSize: '12px',
-        }}>
-            <div style={{ color: 'var(--color-text-legend)', fontWeight: 'bold', marginBottom: 4 }}>
+        <div className='dashboard-tooltip'>
+            <div className='dashboard-tooltip-title'>
                 {data.dateStr}
             </div>
-            <div style={{ color: 'var(--color-text-muted)' }}>
-                Mood: <span style={{ color: 'var(--color-trend-orange)'}}>{data.smoothedMood >= 0 ? `+${data.smoothedMood}` : data.smoothedMood}</span>
+            <div className='dashboard-tooltip-row'>
+                Mood: <span className='text-trend'>{data.smoothedMood >= 0 ? `+${data.smoothedMood}` : data.smoothedMood}</span>
             </div>
-            <div style={{ color: 'var(--color-text-muted)' }}>
-                Deviation: <span style={{ color: 'var(--color-deviation-yellow)'}}>{deviation >= 0 ? `+${deviation.toFixed(2)}` : deviation.toFixed(2)}</span>
+            <div className='dashboard-tooltip-row'>
+                Deviation: <span className='text-deviation'>{deviation >= 0 ? `+${deviation.toFixed(2)}` : deviation.toFixed(2)}</span>
             </div>
-            <div style={{ color: 'var(--color-text-muted)' }}>
-                Tasks: <span style={{ color: 'var(--color-task-high)'}}>{data.taskValue}</span>
+            <div className='dashboard-tooltip-row'>
+                Tasks: <span className='text-task'>{data.taskValue}</span>
             </div>
             {data.entries.length > 1 && (
-                <div style={{ color: 'var(--color-text-muted)', fontSize: 11, marginTop: 4 }}>
+                <div className='dashboard-tooltip-footer'>
                     {data.entries.length} ratings logged ({data.entries.map((e: any) => e.rating).join(', ')})
                 </div>
             )}
@@ -196,19 +190,19 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, selecte
                         <ComposedChart data={processedData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorMood" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="var(--color-trend-orange)" stopOpacity={0.15} />
-                                    <stop offset="95%" stopColor="var(--color-trend-orange)" stopOpacity={0.01} />
+                                    <stop offset="5%" stopColor="var(--chart-orange)" stopOpacity={0.15} />
+                                    <stop offset="95%" stopColor="var(--chart-orange)" stopOpacity={0.01} />
                                 </linearGradient>
                             </defs>
 
-                            <CartesianGrid vertical={false} stroke="var(--color-grid)" />
+                            <CartesianGrid vertical={false} stroke="var(--chart-grid)" />
 
                             <XAxis
                                 dataKey="dateStr"
                                 tickFormatter={(tick, index) => formatXAxis(tick, index, processedData)}
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: 'var(--color-axis-text)', fontSize: 11 }}
+                                tick={{ fill: 'var(--text-axis)', fontSize: 11 }}
                                 interval={0}
                                 orientation='top'
                             />
@@ -220,7 +214,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, selecte
                                 tickFormatter={(v) => (v > 0 ? `+${v}` : v)}
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: 'var(--color-axis-text)', fontSize: 12 }}
+                                tick={{ fill: 'var(--text-axis)', fontSize: 12 }}
                             />
 
                             <Tooltip content={<CustomToolTip />}/>
@@ -239,7 +233,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, selecte
                                 name="Smoothed Trend"
                                 type="monotone"
                                 dataKey="smoothedMood"
-                                stroke="var(--color-trend-orange)"
+                                stroke="var(--chart-orange)"
                                 strokeWidth={2}
                                 dot={false}
                                 activeDot={{ r: 4, strokeWidth: 0 }}
@@ -247,7 +241,7 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, selecte
                                 <ErrorBar
                                     dataKey="deviationError"
                                     width={0}
-                                    stroke="var(--color-deviation-yellow)"
+                                    stroke="var(--chart-yellow)"
                                     strokeWidth={1.5}
                                     opacity={0.7}
                                 />
@@ -264,15 +258,15 @@ export const MoodPulseChart: React.FC<ChartProps> = ({ data, taskCounts, selecte
                             <Tooltip content={<CustomToolTip/>} cursor={false} />
                             <Bar
                                 dataKey="taskValue"
-                                fill="var(--color-task-green)"
+                                fill="var(--chart-task-high)"
                                 maxBarSize={3}
                                 isAnimationActive={false}
 
                                 shape={(props) => {
                                     const { x, y, width, height, value } = props;
                                     const fill = (value as number) / maxTaskValue > 0.6
-                                        ? 'var(--color-task-high)'
-                                        : 'var(--color-task-low)';
+                                        ? 'var(--chart-task-high)'
+                                        : 'var(--chart-task-low)';
                                     return <rect x={x} y={y} width={width} height={height} fill={fill} />;
                                 }}
                             />
