@@ -1,0 +1,17 @@
+:root {
+  --color-bg-chart: #13151a;
+  --color-bg-tooltip: #1c1f26;
+  --color-border-tooltip: #2d333f;
+  --color-grid: #20242c;
+  --color-axis-text: #666666;
+  --color-text-main: #dddddd;
+  --color-text-muted: #888888;
+  --color-text-legend: #aaaaaa;
+  --color-accent-gold: #d9a75d;
+  
+  /* Series Colors */
+  --color-trend-orange: #e67e22;
+  --color-deviation-yellow: #f1c40f;
+  --color-task-low: #7a6e2a;
+  --color-task-high: #5a8a3a;
+}
