@@ -1,0 +1,35 @@
+.layout {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.button_group {
+    background-color: var(--gray-700);
+    padding: var(--space-xs);
+    border-radius: var(--radius-md);
+}
+
+.button_group button {
+    background-color: var(--gray-700);
+    color: var(--white);
+    padding: var(--space-sm);
+    border: 1px solid var(--gray-700);
+    border-radius: var(--radius-md);
+}
+
+.button_group button:hover {
+    background-color: var(--gray-800);
+}
+
+.search {
+    flex: 1;
+    max-width: 22rem;
+    min-width: 12rem;
+    height: var(--space-sm);
+    padding: var(--space-md);
+    background-color: var(--gray-700);
+    color: var(--white);
+    border: 1px solid var(--gray-800);
+    border-radius: var(--radius-md);
+}

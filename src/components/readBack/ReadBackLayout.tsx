@@ -1,3 +1,4 @@
+import { MoodFilterBar } from './MoodFilterBar';
 import styles from './readBackLayout.module.css';
 
 export function ReadBackLayout() {
@@ -6,12 +7,8 @@ export function ReadBackLayout() {
             <main className={styles.main}>
                 <section className={styles.card}>
                     <div className={styles.filters}>
-                        <div className={`${styles.placeholder} ${styles.title}`}></div>
-                        
-                        <div className={`${styles.placeholder} ${styles.subtitle}`}></div>
-
-                        <div className={`${styles.placeholder} ${styles.timeline}`}></div>
-                    <span>210 entries</span>   
+                        <MoodFilterBar />
+                        <span>210 entries</span>
                     </div>
                 </section>
             </main>

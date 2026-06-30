@@ -10,6 +10,11 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+}
+
+.filters > :first-child {
+    flex: 1;
 }
 
 .filters span {
