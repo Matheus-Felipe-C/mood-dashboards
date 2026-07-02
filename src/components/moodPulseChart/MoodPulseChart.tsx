@@ -13,14 +13,7 @@ import {
     BarChart
 } from 'recharts';
 import './MoodPulseChart.css';
-
-
-interface MoodDataPoint {
-    uuid: string;
-    rating: number;
-    note: string;
-    timestamp: number;
-}
+import type { MoodDataPoint } from '../../utils/types';
 
 interface ChartProps {
     data: MoodDataPoint[];
