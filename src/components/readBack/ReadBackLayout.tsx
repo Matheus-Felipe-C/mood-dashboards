@@ -1,4 +1,5 @@
-import { MoodFilterBar } from './MoodFilterBar';
+import { DayEntry } from './dayEntry/DayEntry';
+import { MoodFilterBar } from './filterBar/MoodFilterBar';
 import styles from './readBackLayout.module.css';
 
 export function ReadBackLayout() {
@@ -11,6 +12,7 @@ export function ReadBackLayout() {
                         <span>210 entries</span>
                     </div>
                 </section>
+                <DayEntry />
             </main>
 
             <aside className={styles.sidebar}>
