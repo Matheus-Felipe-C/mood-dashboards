@@ -4,6 +4,7 @@
     gap: var(--space-lg);
 
     align-items: start;
+    padding: var(--space-md);
 }
 
 .filters {
@@ -25,7 +26,9 @@
 .main {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    gap: var(--space-sm);
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
 }
 
 .sidebar {

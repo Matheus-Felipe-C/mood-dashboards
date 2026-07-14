@@ -13,6 +13,7 @@ export function ReadBackLayout() {
                     </div>
                 </section>
                 <DayEntry />
+                <DayEntry />
             </main>
 
             <aside className={styles.sidebar}>

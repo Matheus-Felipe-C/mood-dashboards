@@ -4,7 +4,7 @@
         gap: var(--space-md);
         border-top: 1px solid var(--border-default);
         min-height: 300px;
-        padding: var(--space-md) 0;
+        padding: var(--space-md);
         background-color: var(--card-bg);
     }
 
