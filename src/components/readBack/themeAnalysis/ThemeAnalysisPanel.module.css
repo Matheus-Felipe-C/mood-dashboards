@@ -1,0 +1,46 @@
+.layout {
+    background-color: var(--card-bg);
+    color: var(--white);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+}
+
+.mutedTitle {
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: var(--text-md);
+}
+
+.layout h3 {
+    margin: var(--space-xs) 0;
+}
+
+.muted {
+    color: var(--text-muted);
+    font-size: var(--text-md);
+}
+
+.green {
+    color: var(--green-400);
+}
+
+.red {
+    color: var(--red-500);
+}
+
+.wordContainer {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.wordItem {
+    display: flex;
+    justify-content: space-between;
+}
+
+.wordInfo {
+    display: flex;
+    flex-direction: column;
+    font-size: var(--text-md);
+}

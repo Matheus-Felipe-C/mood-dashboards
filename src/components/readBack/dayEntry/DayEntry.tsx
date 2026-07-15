@@ -1,10 +1,5 @@
-import type { MoodDataPoint } from "../../../utils/types";
 import { TaskRow } from "../taskRow/TaskRow";
 import style from './DayEntry.module.css';
-
-interface Props {
-    data: MoodDataPoint;
-}
 
 export function DayEntry() {
     return (
