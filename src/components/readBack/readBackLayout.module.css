@@ -1,6 +1,6 @@
 .layout {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) var(--sidebar-width);
+    grid-template-columns: 1fr;
     gap: var(--space-lg);
 
     align-items: start;
@@ -9,13 +9,13 @@
 
 .filters {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
 }
 
 .filters > :first-child {
-    flex: 1;
+    width: 100%;
 }
 
 .filters span {
@@ -29,12 +29,14 @@
     gap: var(--space-sm);
     background-color: var(--card-bg);
     border: 1px solid var(--card-border);
+    min-width: 0;
 }
 
 .sidebar {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
+    min-width: 0;
 }
 
 .card {
@@ -42,11 +44,8 @@
     border: 1px solid var(--card-border);
     border-radius: var(--radius-lg);
     padding: var(--space-lg);
-}
-
-.placeholder {
-    background: var(--surface-hover);
-    border-radius: var(--radius-md);
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .timeline {
@@ -71,4 +70,10 @@
 
 .short {
     width: 80%;
+}
+
+@media screen and (min-width: 1024px ) {
+    .layout {
+        grid-template-columns: minmax(0, 3fr) var(--sidebar-width);
+    }
 }
