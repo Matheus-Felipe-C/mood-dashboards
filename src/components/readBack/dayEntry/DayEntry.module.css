@@ -1,22 +1,23 @@
 .layout {
     display: flex;
-    align-items: flex-start;
-    gap: var(--space-md);
+    flex-wrap: wrap;
+    gap: var(--space-sm);
     border-top: 1px solid var(--border-default);
-    min-height: 300px;
     padding: var(--space-md);
     background-color: var(--card-bg);
 }
 
 .fulldate {
+    order: 1;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: baseline;
     gap: var(--space-xs);
 }
 
 .fulldate h3 {
     color: var(--text-primary);
-    font-size: var(--text-lg);
+    font-size: var(--text-md);
     margin: 0;
 }
 
@@ -27,10 +28,11 @@
 }
 
 .timeline {
+    order: 2;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    align-self: stretch;
+    margin-left: auto;
 }
 
 .mood {
@@ -47,16 +49,14 @@
 }
 
 .line {
-    flex: 1;
-    width: 1px;
-    background-color: var(--gold-400);
-    margin-top: var(--space-xs);
+    display: none;
 }
 
 .info_column {
+    order: 3;
+    flex: 1 1 100%;
     display: flex;
     flex-direction: column;
-    flex: 1;
     min-width: 0;
 }
 
@@ -89,4 +89,54 @@
     text-transform: uppercase;
     font-size: var(--text-md);
     margin: var(--space-sm) 0;
+}
+
+/* Tablet / Computer breakpoints */
+@media screen and (min-width: 768px) {
+    .layout {
+        flex-wrap: nowrap;
+        align-items: flex-start;
+        gap: var(--space-md);
+        min-height: 300px;
+        padding: var(--space-md);
+    }
+
+    .fulldate {
+        order: initial;
+        flex-direction: column;
+        gap: var(--space-xs);
+        padding-right: var(--space-3xl);
+    }
+
+    .fulldate h3 {
+        font-size: var(--text-lg);
+    }
+
+    .timeline {
+        order: initial;
+        flex-direction: column;
+        align-items: center;
+        align-self: stretch;
+        margin-left: 0;
+    }
+
+    .mood {
+        width: 48px;
+        height: 48px;
+        font-size: var(--text-lg);
+    }
+
+    .line {
+        display: block;
+        flex: 1;
+        width: 1px;
+        background-color: var(--gold-400);
+        margin-top: var(--space-xs);
+    }
+
+    .info_column {
+        order: initial;
+        flex: 1;
+        flex-direction: column;
+    }
 }
