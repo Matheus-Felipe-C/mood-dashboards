@@ -10,7 +10,6 @@ export function ReadBackLayout() {
                 <section className={styles.card}>
                     <div className={styles.filters}>
                         <MoodFilterBar />
-                        <span>210 entries</span>
                     </div>
                 </section>
                 <DayEntry />

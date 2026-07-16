@@ -1,7 +1,15 @@
 .layout {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: var(--space-sm);
     align-items: center;
+    justify-content: center;
+}
+
+.groups {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
 }
 
 .button_group {
@@ -32,4 +40,15 @@
     color: var(--white);
     border: 1px solid var(--gray-800);
     border-radius: var(--radius-md);
+}
+
+@media screen and (min-width: 768px) {
+    .layout {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .groups {
+        flex-direction: row;
+    }
 }
