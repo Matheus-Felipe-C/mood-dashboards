@@ -29,9 +29,11 @@
     color: var(--red-500);
 }
 
-.wordContainer {
+.wordsContainer {
     display: flex;
+    flex-direction: column;
     gap: var(--space-md);
+    margin-top: var(--space-lg);
 }
 
 .wordItem {
@@ -42,5 +44,6 @@
 .wordInfo {
     display: flex;
     flex-direction: column;
+    gap: var(--space-xs);
     font-size: var(--text-md);
 }
