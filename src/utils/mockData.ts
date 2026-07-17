@@ -1,3 +1,5 @@
+import type { AmplenoteTask } from "./types";
+
 /**
  * Generates an array of mock mood ratings.
  * @param count Number of mock entries to generate.
@@ -31,9 +33,33 @@ export function generateMockTaskCounts(days: number): Map<string, number> {
     const now = Math.floor(Date.now() / 1000);
 
     for (let i = days - 1; i >= 0; i--) {
-        const date = new Date((now - i * 86400) * 1000).toDateString(); 
+        const date = new Date((now - i * 86400) * 1000).toDateString();
         counts.set(date, Math.floor(Math.random() * 40 + 5));
     }
 
     return counts;
+}
+
+export function generateMockTasks(count: number = 20, completed: boolean = false, daysBack = 7): AmplenoteTask[] {
+    const now = Math.floor(Date.now() / 1000);
+
+    return Array.from({ length: count }, (_, i) => {
+        const randomDay = Math.floor(Math.random() * daysBack);
+
+        return {
+            uuid: crypto.randomUUID(),
+            noteUUID: crypto.randomUUID(),
+            content: `${completed ? "Completed" : "Task"} ${i + 1}`,
+            createdAt: now - randomDay * 86400,
+            completedAt:
+                completed
+                    ? now - randomDay * 86400
+                    : undefined,
+            important: Math.random() > 0.7,
+            urgent: !completed && Math.random() > 0.8,
+            score: Math.random() * 100,
+            isRepeating: false,
+            repeat: null,
+        };
+    });
 }

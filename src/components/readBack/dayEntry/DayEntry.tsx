@@ -1,17 +1,42 @@
+import type { AmplenoteTask, MoodDataPoint } from "../../../utils/types";
 import { TaskRow } from "../taskRow/TaskRow";
 import style from './DayEntry.module.css';
 
-export function DayEntry() {
+interface DayEntryProps {
+    mood: MoodDataPoint;
+    tasks: AmplenoteTask[];
+}
+
+function formatDate(timestamp: number) {
+    const date = new Date(timestamp * 1000);
+
+    return {
+        monthDay: date.toLocaleDateString("en-US", {
+            month: "long",
+            day: 'numeric',
+        }),
+        weekday: date.toLocaleDateString("en-US", {
+            weekday: 'long',
+        }),
+        year: date.getFullYear(),
+    }
+}
+
+export function DayEntry({ mood, tasks }: DayEntryProps) {
+    const { monthDay, weekday, year } = formatDate(mood.timestamp);
+    const taskCount = tasks.length;
+
+    const totalPoints = tasks.reduce((sum, task) => sum + task.score, 0);
     return (
         <div className={style.layout}>
             <div className={style.fulldate}>
-                <h3>May 25</h3>
-                <p>Monday</p>
-                <p>2026</p>
+                <h3>{monthDay}</h3>
+                <p>{weekday}</p>
+                <p>{year}</p>
             </div>
             <div className={style.timeline}>
                 <div className={style.mood}>
-                    <p>+0.5</p>
+                    <p>{mood.rating > 0 ? "+" : "" }{mood.rating.toFixed(1)}</p>
                 </div>
 
                 <div className={style.line} />
@@ -19,15 +44,18 @@ export function DayEntry() {
             </div>
             <div className={style.info_column}>
                 <div className={style.mood_quote}>
-                    <p>"Decent day. Some friction with the contract review but moved past it."</p>
+                    <p>"{mood.note}"</p>
                 </div>
 
                 <div className={style.task_list}>
-                    <p>6 tasks - 404 pts</p>
-                    {/* Tasks get added here */}
-                    <TaskRow taskName="Test task" taskValue={61} />
-                    <TaskRow taskName="Test task" taskValue={61} />
-                    <TaskRow taskName="Test task" taskValue={61} />
+                    <p>{taskCount} tasks - {Math.round(totalPoints)} pts</p>
+                    {tasks.map(task => (
+                        <TaskRow
+                            key={task.uuid}
+                            taskName={task.content}
+                            taskValue={Math.floor(task.score)}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
