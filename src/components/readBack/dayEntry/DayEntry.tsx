@@ -25,7 +25,7 @@ function formatDate(timestamp: number) {
 export function DayEntry({ mood, tasks }: DayEntryProps) {
     const { monthDay, weekday, year } = formatDate(mood.timestamp);
     const taskCount = tasks.length;
-    const totalPoints = tasks.reduce((sum, task) => sum + task.score, 0);
+    const totalPoints = tasks.reduce((sum, task) => sum + task.victoryValue, 0);
 
     return (
         <div className={style.layout}>
@@ -53,7 +53,7 @@ export function DayEntry({ mood, tasks }: DayEntryProps) {
                         <TaskRow
                             key={task.uuid}
                             taskName={task.content}
-                            taskValue={Math.floor(task.score)}
+                            taskValue={Math.floor(task.victoryValue)}
                         />
                     ))}
                 </div>

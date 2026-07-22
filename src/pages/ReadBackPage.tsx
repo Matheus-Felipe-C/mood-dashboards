@@ -10,8 +10,8 @@ export function ReadDaysBack() {
         if (typeof window.callAmplenotePlugin !== 'function') {
             console.log('Failed to get mood data from the plugin API, falling back to mocked data...');
 
-            setMoodData(generateMockMoods(days, days));
-            setCompletedTasks(generateMockTasks(days, true, days));
+            setMoodData(generateMockMoods(10, 10));
+            setCompletedTasks(generateMockTasks(10, true, 10));
 
             return;
         }
@@ -19,6 +19,9 @@ export function ReadDaysBack() {
         try {
             const moods = await window.callAmplenotePlugin('getMoods', days);
             const completedTasks = await window.callAmplenotePlugin('getCompletedTasks', days);
+
+            console.log(moods);
+            console.log(completedTasks);
 
             setMoodData(moods);
             setCompletedTasks(completedTasks);
@@ -28,7 +31,7 @@ export function ReadDaysBack() {
     }
 
     useEffect(() => {
-        loadData(10);
+        loadData(60);
     }, []);
 
     return (

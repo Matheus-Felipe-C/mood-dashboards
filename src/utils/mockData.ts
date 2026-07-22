@@ -77,7 +77,7 @@ export function generateMockTasks(count: number = 20, completed: boolean = false
                     : undefined,
             important: Math.random() > 0.7,
             urgent: !completed && Math.random() > 0.8,
-            score: Math.random() * 100,
+            victoryValue: Math.random() * 100,
             isRepeating: false,
             repeat: null,
         };

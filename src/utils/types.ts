@@ -13,7 +13,7 @@ export interface AmplenoteTask {
     completedAt?: number;
     important: boolean;
     urgent: boolean;
-    score: number;
+    victoryValue: number;
     isRepeating: boolean;
     repeat: string | null;
 }
