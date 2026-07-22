@@ -25,8 +25,8 @@ function formatDate(timestamp: number) {
 export function DayEntry({ mood, tasks }: DayEntryProps) {
     const { monthDay, weekday, year } = formatDate(mood.timestamp);
     const taskCount = tasks.length;
-
     const totalPoints = tasks.reduce((sum, task) => sum + task.score, 0);
+
     return (
         <div className={style.layout}>
             <div className={style.fulldate}>

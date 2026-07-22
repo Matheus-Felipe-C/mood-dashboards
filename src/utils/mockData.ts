@@ -43,13 +43,33 @@ export function generateMockTaskCounts(days: number): Map<string, number> {
 export function generateMockTasks(count: number = 20, completed: boolean = false, daysBack = 7): AmplenoteTask[] {
     const now = Math.floor(Date.now() / 1000);
 
+    const taskNames = [
+        "Fix authentication bug in login API",
+        "Design landing page header",
+        "Update database schema for users",
+        "Code review for pull request",
+        "Refactor CSS layout and styles",
+        "Emergency server deployment fix",
+        "Write unit tests for checkout",
+        "Prepare weekly marketing deck",
+        "Debug memory leak in production",
+        "Draft project roadmap and scope",
+        "Sync with design team on Figma",
+        "Pay quarterly credit card invoice",
+        "Setup Docker container for dev",
+        "Clean up obsolete documentation",
+        "Investigate database query lag"
+    ];
+
     return Array.from({ length: count }, (_, i) => {
         const randomDay = Math.floor(Math.random() * daysBack);
+
+        const randomTitle = taskNames[Math.floor(Math.random() * taskNames.length)];
 
         return {
             uuid: crypto.randomUUID(),
             noteUUID: crypto.randomUUID(),
-            content: `${completed ? "Completed" : "Task"} ${i + 1}`,
+            content: `${randomTitle} #${i + 1}`,
             createdAt: now - randomDay * 86400,
             completedAt:
                 completed

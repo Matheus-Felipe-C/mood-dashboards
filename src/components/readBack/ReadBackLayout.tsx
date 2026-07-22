@@ -1,8 +1,10 @@
+import { useMemo } from 'react';
 import type { AmplenoteTask, MoodDataPoint } from '../../utils/types';
 import { DayEntry } from './dayEntry/DayEntry';
 import { MoodFilterBar } from './filterBar/MoodFilterBar';
 import styles from './readBackLayout.module.css';
 import { ThemeAnalysisPanel } from './themeAnalysis/ThemeAnalysisPanel';
+import { getRankedTaskWords } from '../../utils/taskMoodAnalytics';
 
 interface ChartProps {
     data: MoodDataPoint[];
@@ -10,6 +12,30 @@ interface ChartProps {
 }
 
 export function ReadBackLayout({ data, completedTasks }: ChartProps) {
+    const rankedWords = useMemo(
+        () => getRankedTaskWords(completedTasks, data),
+        [completedTasks, data],
+    );
+
+    const { bestWords, worstWords } = useMemo(() => {
+        const formatted = rankedWords.map(w => ({
+            name: w.word,
+            taskCount: w.count,
+            score: w.smoothedScore,
+        }));
+
+        const best = formatted
+            .filter(w => w.score > 0)
+            .slice(0, 10);
+        
+        const worst = [...formatted]
+            .filter(w => w.score < 0)
+            .sort((a, b) => a.score - b.score)
+            .slice(0, 10);
+        
+        return { bestWords: best, worstWords: worst };
+    }, [rankedWords]);
+    
 
     return (
         <div className={styles.layout}>
@@ -43,31 +69,11 @@ export function ReadBackLayout({ data, completedTasks }: ChartProps) {
             <aside className={styles.sidebar}>
                 <ThemeAnalysisPanel
                     variant='best'
-                    words={[
-                        { name: 'Logo', taskCount: 33, score: 1.44 },
-                        { name: 'Design', taskCount: 18, score: 0.92 },
-                        { name: 'Marketing', taskCount: 11, score: 0.54 },
-                        { name: 'Logo', taskCount: 33, score: 1.44 },
-                        { name: 'Design', taskCount: 18, score: 0.92 },
-                        { name: 'Marketing', taskCount: 11, score: 0.54 },
-                        { name: 'Logo', taskCount: 33, score: 1.44 },
-                        { name: 'Design', taskCount: 18, score: 0.92 },
-                        { name: 'Marketing', taskCount: 11, score: 0.54 },
-                    ]}
+                    words={bestWords}
                 />
                 <ThemeAnalysisPanel
                     variant='worst'
-                    words={[
-                        { name: 'Logo', taskCount: 33, score: -1.44 },
-                        { name: 'Design', taskCount: 18, score: -0.92 },
-                        { name: 'Marketing', taskCount: 11, score: -0.54 },
-                        { name: 'Logo', taskCount: 33, score: -1.44 },
-                        { name: 'Design', taskCount: 18, score: -0.92 },
-                        { name: 'Marketing', taskCount: 11, score: -0.54 },
-                        { name: 'Logo', taskCount: 33, score: -1.44 },
-                        { name: 'Design', taskCount: 18, score: -0.92 },
-                        { name: 'Marketing', taskCount: 11, score: -0.54 },
-                    ]}
+                    words={worstWords}
                 />
             </aside>
         </div>

@@ -21,8 +21,8 @@ export function ThemeAnalysisPanel({ variant, words }: ThemeAnalysisPanelProps) 
             <span className={style.muted}>Click any to filter the timeline</span>
 
             <div className={style.wordsContainer}>
-                {words.map((word) => (
-                    <div key={word.name} className={style.wordItem}>
+                {words.map((word, index) => (
+                    <div key={`${word.name}-${index}`} className={style.wordItem}>
                         <div className={style.wordInfo}>
                             <span>{word.name}</span>
                             <span className={style.muted}>
