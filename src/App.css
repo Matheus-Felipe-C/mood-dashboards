@@ -78,7 +78,7 @@
   /* Cards */
   --card-bg: var(--surface-card);
   --card-border: var(--border-default);
-  --card-border-subtle: var(var(--border-subtle));
+  --card-border-subtle: var(--border-subtle);
 
   /* Sidebar */
   --sidebar-bg: var(--surface-app);
