@@ -25,7 +25,7 @@ export function generateMockMoods(count: number = 10, daysBack: number = 7) {
             note: randomTemplate.note,
             timestamp,
         };
-    }).sort((a, b) => a.timestamp - b.timestamp);
+    }).sort((a, b) => b.timestamp - a.timestamp);
 }
 
 export function generateMockTaskCounts(days: number): Map<string, number> {
